@@ -1,0 +1,11 @@
+[package]
+name = "kitshell-ipc"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.100"
+bon = "3.7.2"
+clap = { version = "4.5.48", features = ["derive"] }
+linux-ipc = "0.2.1"
+serde = { version = "1.0.228", features = ["derive"] }
