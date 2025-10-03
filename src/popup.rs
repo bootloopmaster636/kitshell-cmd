@@ -39,7 +39,7 @@ pub fn handle_popup(popup: &PopupKind) -> Result<(), Error> {
                     println!("kitshell-ipc version and Kitshell version does not match");
                     println!(
                         "kitshell-ipc spec version is {}, and kitshell spec version is {}",
-                        reply.server_spec_version, KITSHELL_IPC_CLIENT_SPEC_VER
+                        KITSHELL_IPC_CLIENT_SPEC_VER, reply.server_spec_version
                     );
                     println!("Please upgrade both to the latest version!");
                 } else {
