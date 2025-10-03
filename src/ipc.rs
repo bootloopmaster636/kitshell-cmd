@@ -1,16 +1,16 @@
 use anyhow::{Error, anyhow};
 use linux_ipc::IpcChannel;
 
-use crate::types::{IpcContent, IpcMessage, KITSHELL_SPEC_VER};
+use crate::types::{IpcContent, IpcMessage, IpcReply, KITSHELL_IPC_CLIENT_SPEC_VER};
 
-pub fn send(content: IpcContent) -> Result<Option<IpcMessage>, Error> {
+pub fn send(content: IpcContent) -> Result<Option<IpcReply>, Error> {
     let mut channel = connect()?;
 
     let message = IpcMessage {
         content,
-        version: KITSHELL_SPEC_VER,
+        version: KITSHELL_IPC_CLIENT_SPEC_VER,
     };
-    let response = channel.send::<_, IpcMessage>(message)?;
+    let response = channel.send::<IpcMessage, IpcReply>(message)?;
 
     if let Some(response) = &response {
         println!("Kitshell IPC: Received {:?}", &response);

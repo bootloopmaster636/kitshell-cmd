@@ -1,6 +1,10 @@
+use anyhow::{Error, bail};
 use clap::Subcommand;
 
-use crate::{ipc, types::IpcContent};
+use crate::{
+    ipc,
+    types::{IpcContent, KITSHELL_IPC_CLIENT_SPEC_VER},
+};
 
 #[derive(Subcommand)]
 pub enum PopupKind {
@@ -17,7 +21,7 @@ pub enum PopupKind {
     Mpris,
 }
 
-pub fn handle_popup(popup: &PopupKind) {
+pub fn handle_popup(popup: &PopupKind) -> Result<(), Error> {
     let result = IpcContent::builder()
         .opt1("popup".to_owned())
         .maybe_opt2(match popup {
@@ -28,5 +32,26 @@ pub fn handle_popup(popup: &PopupKind) {
         })
         .build();
 
-    let _ = ipc::send(result);
+    match ipc::send(result) {
+        Ok(val) => match val {
+            Some(reply) => {
+                if reply.server_spec_version != KITSHELL_IPC_CLIENT_SPEC_VER {
+                    println!("kitshell-ipc version and Kitshell version does not match");
+                    println!(
+                        "kitshell-ipc spec version is {}, and kitshell spec version is {}",
+                        reply.server_spec_version, KITSHELL_IPC_CLIENT_SPEC_VER
+                    );
+                    println!("Please upgrade both to the latest version!");
+                } else {
+                    if reply.received_successfully {
+                        println!("Received successfully")
+                    }
+                }
+            }
+            None => {}
+        },
+        Err(_) => bail!("Failed to send IPC command"),
+    }
+
+    Ok(())
 }

@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::popup::PopupKind;
 
-pub const KITSHELL_SPEC_VER: u32 = 2025_10_02;
+pub const KITSHELL_IPC_CLIENT_SPEC_VER: u32 = 2025_10_02;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct IpcMessage {
@@ -22,6 +22,12 @@ pub struct IpcContent {
     opt3: Option<String>,
     opt4: Option<String>,
     opt5: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct IpcReply {
+    pub received_successfully: bool,
+    pub server_spec_version: u32,
 }
 
 #[derive(Parser)]
