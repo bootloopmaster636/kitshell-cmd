@@ -1,6 +1,6 @@
 [package]
-name = "kitshell-ipc"
-version = "0.1.0"
+name = "kitshell-cmd"
+version = "0.100.0"
 edition = "2024"
 
 [dependencies]

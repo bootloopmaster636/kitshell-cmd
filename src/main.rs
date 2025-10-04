@@ -1,6 +1,6 @@
 use anyhow::Error;
 use clap::Parser;
-use kitshell_ipc::{
+use kitshell_cmd::{
     popup::{self},
     types::{Cli, Commands},
 };
